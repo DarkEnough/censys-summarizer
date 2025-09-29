@@ -1,4 +1,5 @@
 import json
+import os
 from transformers import pipeline
 import torch
 
@@ -9,6 +10,17 @@ class HFSummarizer:
     
     def __init__(self):
         """Initialize hybrid summarizer with cached BART model"""
+        # Check if HuggingFace models should be disabled (for cloud deployment)
+        if os.getenv("DISABLE_HF", "false").lower() == "true":
+            print("🚫 HuggingFace models disabled via DISABLE_HF environment variable")
+            print("Using rule-based summaries only (cloud-optimized mode)")
+            HFSummarizer._cached_summarizer = None
+            self.use_ai = False
+            self.summarizer = None
+            self.initialized = True
+            HFSummarizer._cache_initialized = True
+            return
+        
         if not HFSummarizer._cache_initialized:
             try:
                 print("Loading BART-large-cnn model (this may take a moment on first run)...")
