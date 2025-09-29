@@ -2,9 +2,16 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 import json
-from backend.models import SummarizationRequest, SummarizationResponse, HealthResponse
-from backend.summarizer_groq import GroqSummarizer
-from backend.summarizer_hf import HFSummarizer
+try:
+    # For deployment (when run as module)
+    from backend.models import SummarizationRequest, SummarizationResponse, HealthResponse
+    from backend.summarizer_groq import GroqSummarizer
+    from backend.summarizer_hf import HFSummarizer
+except ImportError:
+    # For local development (when run from backend directory)
+    from models import SummarizationRequest, SummarizationResponse, HealthResponse
+    from summarizer_groq import GroqSummarizer
+    from summarizer_hf import HFSummarizer
 
 app = FastAPI(title="Censys Data Summarizer API")
 
