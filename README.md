@@ -2,6 +2,14 @@
 
 An AI-powered full-stack application that generates intelligent summaries of Censys host data using either Groq's Llama 3.1 or HuggingFace's BART model.
 
+## 🌐 Live Demo
+
+**Try it now:** [https://censys-summarizer.vercel.app](https://censys-summarizer.vercel.app)
+
+- **Frontend**: Deployed on Vercel
+- **Backend**: Deployed on Render
+- **Note**: The cloud demo only includes Groq API summaries (Llama 3.1 8B). HuggingFace BART summaries are disabled in production due to model size constraints (~1.6GB). For full local functionality with both AI models, follow the installation instructions below.
+
 ## 🌟 Features
 
 - **Dual AI Summarization**: Choose between Groq (cloud-based) or HuggingFace (local) models
@@ -23,7 +31,7 @@ An AI-powered full-stack application that generates intelligent summaries of Cen
 
 1. **Clone the repository**:
 ```bash
-git clone <repository-url>
+git clone https://github.com/DarkEnough/censys-summarizer.git
 cd censys-summarizer
 ```
 
@@ -34,11 +42,9 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
-cd backend
 pip install -r requirements.txt
 
 # Set up environment variables (optional for Groq)
-cd ..
 cp .env.example .env
 # Edit .env and add your GROQ_API_KEY
 ```
@@ -54,15 +60,16 @@ The API will be available at `http://localhost:8000`
 - Health check: `http://localhost:8000/health`
 
 4. **Open the frontend**:
-Simply open `frontend/index.html` in your browser, or serve it with a local server:
+**Important**: Serve the frontend with a local server (don't open the HTML file directly):
 ```bash
-# Using Python
+# Using Python (recommended)
 cd frontend
-python -m http.server 3000
+python3 -m http.server 3000
 
-# Or using Node.js
-npx serve frontend -p 3000
+# Then open: http://localhost:3000
 ```
+
+**Note**: Opening `index.html` directly in the browser won't work due to environment detection requirements.
 
 ## 📊 Using the Application
 
@@ -72,7 +79,7 @@ npx serve frontend -p 3000
 2. Choose your summarizer (Groq or HuggingFace)
 3. Either:
    - Upload a JSON file with host data
-   - Click "Load Sample Data" to use pre-loaded examples
+   - Click "Load hosts_dataset" to use the real Censys interview data
 4. Click "Generate Summaries"
 5. View the AI-generated summaries with expandable details
 
